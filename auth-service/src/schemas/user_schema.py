@@ -12,11 +12,5 @@ class UserSchema(ExtendedBaseModel):
     tag: str
     email: EmailStr
 
-    full_name: str
-    gender: Gender
-    description: str
-    country: str
-    age: int
-
     created_at: datetime
     updated_at: datetime
