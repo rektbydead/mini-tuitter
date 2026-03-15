@@ -9,12 +9,20 @@ from enums.gender import Gender
 from enums.role import Role
 
 
-class AuthUserEntity(BaseEntity):
-    __tablename__ = "auth_user_table"
+class UserEntity(BaseEntity):
+    __tablename__ = "user_account"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
+    tag: Mapped[str] = mapped_column(unique=True, index=True)
     email: Mapped[str] = mapped_column(unique=True, index=True)
+    # role: Mapped[Role] = mapped_column(Enum(Role), default=Role.USER)
     hashed_password: Mapped[str] = mapped_column()
+
+    # full_name: Mapped[str] = mapped_column(nullable=False)
+    # gender: Mapped[Gender] = mapped_column(Enum(Gender), nullable=False)
+    # description: Mapped[str] = mapped_column(nullable=False)
+    # country: Mapped[str] = mapped_column(nullable=False)
+    # age: Mapped[int] = mapped_column(nullable=False)
 
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(), nullable=False)
     updated_at: Mapped[Optional[datetime]] = mapped_column(default=datetime.now(), nullable=True)
