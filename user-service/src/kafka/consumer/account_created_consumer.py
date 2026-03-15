@@ -7,29 +7,35 @@ from services.user_service import UserService
 
 service = Annotated[UserService, Depends()]
 
-consumer = Consumer({
-    'bootstrap.servers': 'broker:29092'
-})
 
-consumer.subscribe(['account-created'])
-
-def process_message(message):
-    create_account_dto = CreateAccountDTO(**message)
+def process_message(payload: str):
+    create_account_dto = CreateAccountDTO(**payload)
     pass
 
-while True:
-    message = consumer.poll(1)
 
-    if message is None:
-        continue
+def consume_messages():
+    consumer = Consumer({
+        'bootstrap.servers': 'broker:29092'
+    })
 
-    if message.error():
-        print("Consumer error: {}".format(message.error()))
-        continue
+    consumer.subscribe(['account-created'])
 
-    print(f"Received message ({message.key()}): {message}")
-    process_message(message)
+    while True:
+        message = consumer.poll(1)
+
+        if message is None:
+            continue
+
+        if message.error():
+            print("Consumer error: {}".format(message.error()))
+            continue
+
+        print(f"Received message ({message.key()}): {message}")
+        process_message(message=message.value().decode())
+
+    consumer.close()
 
 
+consume_messages()
 
-consumer.close()
+# consumer.close()

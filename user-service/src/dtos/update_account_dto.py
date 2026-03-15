@@ -2,13 +2,12 @@ from pydantic import Field
 
 from config.extended_base_model import ExtendedBaseModel
 from enums.gender import Gender
+from enums.role import Role
 
 
 class UpdateAccountDTO(ExtendedBaseModel):
     # tag: str = Field(min_length=1, max_length=32)
-    # email: EmailStr
-    # role: Role = Field(default=Role.USER)
-    # password: str = Field(min_length=6, max_length=128)
+    role: Role = Field(default=Role.USER)
 
     full_name: str = Field(min_length=1, max_length=32)
     gender: Gender

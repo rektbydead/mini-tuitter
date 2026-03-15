@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5f8aaf3f-e5fb-459d-acde-8927900594e8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../user-service/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/config/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/config/database_session.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/config/extended_base_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/dtos/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/dtos/create_account_dto.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/dtos/update_account_dto.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/enums/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/enums/gender.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/enums/role.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/kafka/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/kafka/consumer/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/kafka/consumer/account_created_consumer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/models/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/models/base_entity.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/models/entity/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/models/entity/user_entity.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/routers/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/routers/user_router.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/schemas/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/schemas/kafka_events/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/schemas/user_schema.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/services/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../user-service/src/services/user_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/crypto/auth/jwt_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/crypto/auth/jwt_handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/entity/user_entity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/entity/user_entity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/auth_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/auth_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="3Ax6bUu4IzmWpS6R8FBjVG8h0SU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "ai.playground.ignore.import.keys.banner.in.settings": "true",
+    "git-widget-placeholder": "move-to-user-service",
+    "last_opened_file_path": "C:/Users/Ruben/Desktop/Projects/mini-tuitter/auth-service",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PY-253.31033.139" />
+        <option value="bundled-python-sdk-2653e85de345-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.31033.139" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5f8aaf3f-e5fb-459d-acde-8927900594e8" name="Changes" comment="" />
+      <created>1773521945695</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1773521945695</updated>
+      <workItem from="1773521947017" duration="3125000" />
+      <workItem from="1773598664158" duration="70000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

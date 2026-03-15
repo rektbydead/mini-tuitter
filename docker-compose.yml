@@ -19,6 +19,16 @@ services:
     depends_on:
       - broker
 
+  user-service:
+    build:
+      context: user-service
+      dockerfile: Dockerfile
+    expose:
+      - "8000"
+    restart: unless-stopped
+    depends_on:
+      - broker
+
   broker:
     image: apache/kafka:latest
     hostname: broker
