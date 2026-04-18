@@ -13,8 +13,9 @@ class AuthUserEntity(BaseEntity):
     __tablename__ = "auth_user_table"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
+    tag: Mapped[str] = mapped_column(unique=True, index=True)
     email: Mapped[str] = mapped_column(unique=True, index=True)
     hashed_password: Mapped[str] = mapped_column()
 
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(), nullable=False)
-    updated_at: Mapped[Optional[datetime]] = mapped_column(default=datetime.now(), nullable=True)
+    updated_at: Mapped[datetime] = mapped_column(default=datetime.now(), nullable=False)

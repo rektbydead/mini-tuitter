@@ -13,12 +13,13 @@ from services.auth_service import AuthService
 router = APIRouter(prefix="", tags=["auth"])
 
 
-@router.post("/register", status_code=status.HTTP_200_OK, response_model=UserSchema)
+@router.post("/register", status_code=status.HTTP_200_OK)
 def register_user(
         service: Annotated[AuthService, Depends()],
         dto: RegisterAccountDTO,
 ):
-    return service.register(dto)
+    service.register(dto)
+    return "carago"
 
 
 @router.post("/login", status_code=status.HTTP_200_OK, response_model=TokenSchema)
