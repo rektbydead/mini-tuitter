@@ -27,6 +27,7 @@ class AuthService:
 
     def register(self, dto: RegisterAccountDTO) -> AuthUserEntity:
         entity = AuthUserEntity(
+            tag=dto.tag,
             email=dto.email.__str__(),
             hashed_password=HashingContext.generate_hash(dto.password),
         )
