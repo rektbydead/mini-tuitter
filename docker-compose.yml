@@ -26,8 +26,23 @@ services:
     expose:
       - "8000"
     restart: unless-stopped
+    volumes:
+      - sqlite_data:/app/data
     depends_on:
       - broker
+
+  user-service-consumer:
+    build:
+      context: user-service
+    command: python -m kafka.consumer.account_created_consumer
+    restart: unless-stopped
+    volumes:
+      - sqlite_data:/app/data
+    depends_on:
+      user-service:
+        condition: service_started
+      broker:
+        condition: service_healthy
 
   broker:
     image: apache/kafka:latest
@@ -50,3 +65,12 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server broker:29092"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  sqlite_data:
