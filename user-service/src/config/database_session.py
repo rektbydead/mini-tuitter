@@ -13,8 +13,8 @@ def create_db_and_tables(engine: Engine):
 
 @lru_cache(maxsize=1)
 def get_engine() -> Engine:
-    sqlite_file_name = "auth-service.db"
-    sqlite_url = f"sqlite:///{sqlite_file_name}"
+    sqlite_file_name = "user-service.db"
+    sqlite_url = f"sqlite:////app/data/{sqlite_file_name}"
 
     engine = create_engine(
         sqlite_url,
