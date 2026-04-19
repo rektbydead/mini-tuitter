@@ -1,9 +1,0 @@
-fastapi[standard]
-starlette
-uvicorn
-sqlalchemy
-pydantic
-pydantic[email]
-passlib[argon2]
-PyJWT
-confluent-kafka

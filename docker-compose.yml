@@ -7,6 +7,7 @@ services:
       - "80:80"
     restart: unless-stopped
     depends_on:
+      - user-service
       - auth-service
 
   auth-service:
@@ -17,7 +18,8 @@ services:
       - "8000"
     restart: unless-stopped
     depends_on:
-      - broker
+      kafka-init:
+        condition: service_completed_successfully
 
   user-service:
     build:
@@ -29,18 +31,26 @@ services:
     volumes:
       - sqlite_data:/app/data
     depends_on:
-      - broker
+      kafka-init:
+        condition: service_completed_successfully
 
   user-service-consumer:
     build:
       context: user-service
-    command: python -m kafka.consumer.account_created_consumer
+    command: python -m kafka.account_event_consumer
     restart: unless-stopped
     volumes:
       - sqlite_data:/app/data
     depends_on:
-      user-service:
-        condition: service_started
+      kafka-init:
+        condition: service_completed_successfully
+
+  kafka-init:
+    image: apache/kafka:latest
+    entrypoint: ["/bin/bash", "/create-topics.sh"]
+    volumes:
+      - ./scripts/create-topics.sh:/create-topics.sh
+    depends_on:
       broker:
         condition: service_healthy
 

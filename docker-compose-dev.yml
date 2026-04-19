@@ -1,26 +1,16 @@
 services:
   auth-service:
-    build:
-      context: auth-service
-      dockerfile: Dockerfile
-    expose:
-      - "8000"
-    restart: unless-stopped
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app
     volumes:
       - ./auth-service/src:/app/
-    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app
-    depends_on:
-      - broker
 
   user-service:
-    build:
-      context: user-service
-      dockerfile: Dockerfile
-    expose:
-      - "8000"
-    restart: unless-stopped
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app
     volumes:
       - ./user-service/src:/app/
-    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app
-    depends_on:
-      - broker
+
+  user-service-consumer:
+    command: python -m watchfiles "python -m kafka.account_event_consumer" /app/kafka/account_event_consumer.py
+    volumes:
+      - ./user-service/src/:/app/
+      - sqlite_data:/app/data
