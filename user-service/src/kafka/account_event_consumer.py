@@ -1,13 +1,11 @@
 import signal
 
 from confluent_kafka import Consumer
-
-from config.logging import logger
-
-from kafka.account_event_handlers.create_account_event_handler import CreateAccountEventHandler
 from sqlalchemy.orm import Session
 
-from config.database_session import get_session, get_session_context_manager
+from config.database_session import session_context_manager
+from config.logging import logger
+from kafka.account_event_handlers.create_account_event_handler import CreateAccountEventHandler
 
 
 class AccountEventConsumer:
@@ -30,7 +28,6 @@ class AccountEventConsumer:
 
         signal.signal(signal.SIGTERM, self.shutdown)
         signal.signal(signal.SIGINT, self.shutdown)
-
 
     def __handle_account_updated_topic(self, message) -> None:
         pass
@@ -65,7 +62,7 @@ class AccountEventConsumer:
             if message_value is None:
                 continue
 
-            with get_session_context_manager() as session:
+            with session_context_manager() as session:
                 try:
                     logger.info("Distributing received message (topic=%s): %s", message.topic(), message_value)
                     self.__distribute_handling(session, message.topic(), message_value)

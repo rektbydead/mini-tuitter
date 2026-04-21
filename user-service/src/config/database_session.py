@@ -26,20 +26,12 @@ def get_engine() -> Engine:
 
 
 def get_session() -> Generator[Session, Any, None]:
-    engine = get_engine()
-    session = Session(engine)
-    try:
+    with session_context_manager() as session:
         yield session
-        session.commit()
-    except Exception:
-        session.rollback()
-        raise
-    finally:
-        session.close()
 
 
 @contextmanager
-def get_session_context_manager() -> Generator[Session, Any, None]:
+def session_context_manager() -> Generator[Session, Any, None]:
     engine = get_engine()
     session = Session(engine)
     try:
