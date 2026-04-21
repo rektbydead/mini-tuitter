@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from config.database_session import session_context_manager
 from config.logging import logger
 from kafka.account_event_handlers.create_account_event_handler import CreateAccountEventHandler
+from kafka.account_event_handlers.delete_account_event_handler import DeleteAccountEventHandler
 
 
 class AccountEventConsumer:
@@ -39,10 +40,8 @@ class AccountEventConsumer:
         match topic:
             case 'account-created':
                 CreateAccountEventHandler(session).run(message)
-            case 'account-updated':
-                self.__handle_account_updated_topic(message)
             case 'account-deleted':
-                self.__handle_account_delete_topic(message)
+                DeleteAccountEventHandler(session).run(message)
             case _:
                 raise NotImplementedError(f'Handling of topic {topic} not implemented')
 
