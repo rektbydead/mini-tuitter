@@ -4,14 +4,16 @@ from fastapi import APIRouter, Depends
 from starlette import status
 
 from dtos.update_account_dto import UpdateAccountDTO
+from schemas.full_user_schema import UserSchema
 from services.user_service import UserService
 
 router = APIRouter(prefix="", tags=["User"])
 
+
 @router.put(
     "/{user_tag}",
     status_code=status.HTTP_200_OK,
-    # response_model=UserSchema
+    response_model=UserSchema
 )
 def update_user(
         user_tag: str,
@@ -24,7 +26,7 @@ def update_user(
 @router.get(
     "/{user_tag}",
     status_code=status.HTTP_200_OK,
-    # response_model=UserSchema
+    response_model=UserSchema
 )
 def get_user(
         user_tag: str,
@@ -36,11 +38,10 @@ def get_user(
 @router.delete(
     "/{user_tag}",
     status_code=status.HTTP_200_OK,
-    # response_model=UserSchema
+    response_model=UserSchema
 )
 def delete_user(
         user_tag: str,
         service: Annotated[UserService, Depends()],
 ):
-    """ Should this be moved to the auth service? """
     return service.delete_user(user_tag=user_tag)
