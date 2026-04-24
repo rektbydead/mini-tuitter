@@ -1,0 +1,14 @@
+{
+  "type": "record",
+  "name": "AccountCreated",
+  "namespace": "minituitter.authservice.account",
+  "fields": [
+    { "name": "tag", "type": "string" },
+    { "name": "role", "type": "string" },
+    { "name": "full_name", "type": "string" },
+    { "name": "gender", "type": "string" },
+    { "name": "description", "type": "string" },
+    { "name": "country", "type": "string" },
+    { "name": "age", "type": "int" }
+   ]
+}
