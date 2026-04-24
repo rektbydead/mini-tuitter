@@ -46,16 +46,9 @@ class UserService:
         user_entity.gender = dto.gender
         user_entity.age = dto.age
 
-        self._session.add(user_entity)
-        self._session.flush([user_entity])
-        self._session.refresh(user_entity)
-
         return user_entity
 
     def delete_user(self, user_tag: str) -> UserEntity:
         user_entity = self.get_user_by_tag(user_tag)
-
         self._session.delete(user_entity)
-        self._session.flush([user_entity])
-
         return user_entity
