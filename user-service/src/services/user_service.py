@@ -1,5 +1,6 @@
 from typing import Annotated
 
+from confluent_kafka import Producer
 from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 from starlette import status
@@ -7,13 +8,16 @@ from starlette import status
 from config.database_session import get_session
 from dtos.create_account_dto import CreateAccountDTO
 from dtos.update_account_dto import UpdateAccountDTO
+from kafka.kafka_producer import get_kafka_producer
 from models.entity.user_entity import UserEntity
 
 
 class UserService:
 
-    def __init__(self, session: Annotated[Session, Depends(get_session)]) -> None:
+    def __init__(self, session: Annotated[Session, Depends(get_session)],
+                 producer: Annotated[Producer, Depends(get_kafka_producer)]) -> None:
         self._session = session
+        self._producer = producer
 
     def create_user(self, dto: CreateAccountDTO) -> UserEntity:
         entity = UserEntity(
@@ -51,4 +55,10 @@ class UserService:
     def delete_user(self, user_tag: str) -> UserEntity:
         user_entity = self.get_user_by_tag(user_tag)
         self._session.delete(user_entity)
+
+        self._producer.produce(
+            'account-deleted',
+            value=str(user_entity.id),
+        )
+
         return user_entity
