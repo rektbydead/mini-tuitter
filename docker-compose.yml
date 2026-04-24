@@ -7,6 +7,7 @@ services:
       - "80:80"
     restart: unless-stopped
     depends_on:
+      - user-service
       - auth-service
 
   auth-service:
@@ -17,7 +18,41 @@ services:
       - "8000"
     restart: unless-stopped
     depends_on:
-      - broker
+      kafka-init:
+        condition: service_completed_successfully
+
+  user-service:
+    build:
+      context: user-service
+      dockerfile: Dockerfile
+    expose:
+      - "8000"
+    restart: unless-stopped
+    volumes:
+      - sqlite_data:/app/data
+    depends_on:
+      kafka-init:
+        condition: service_completed_successfully
+
+  user-service-consumer:
+    build:
+      context: user-service
+    command: python -m kafka.account_event_consumer
+    restart: unless-stopped
+    volumes:
+      - sqlite_data:/app/data
+    depends_on:
+      kafka-init:
+        condition: service_completed_successfully
+
+  kafka-init:
+    image: apache/kafka:latest
+    entrypoint: ["/bin/bash", "/create-topics.sh"]
+    volumes:
+      - ./scripts/create-topics.sh:/create-topics.sh
+    depends_on:
+      broker:
+        condition: service_healthy
 
   broker:
     image: apache/kafka:latest
@@ -40,3 +75,12 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server broker:29092"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  sqlite_data:

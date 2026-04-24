@@ -12,7 +12,7 @@ from dtos.change_password_dto import ChangePasswordDTO
 from dtos.login_account_dto import LoginDTO
 from dtos.register_account_dto import RegisterAccountDTO
 from kafka.kafka_producer import get_kafka_producer
-from models.entity.user_entity import UserEntity
+from models.entity.user_entity import AuthUserEntity
 from schemas.account_created_event_schema import AccountCreatedEventSchema
 from schemas.jwt_data_schema import JwtDataSchema
 from schemas.token_schema import TokenSchema
@@ -25,10 +25,10 @@ class AuthService:
         self._session = session
         self._producer = producer
 
-    def register(self, dto: RegisterAccountDTO) -> UserEntity:
-        entity = UserEntity(
-            email=dto.email.__str__(),
+    def register(self, dto: RegisterAccountDTO) -> AuthUserEntity:
+        entity = AuthUserEntity(
             tag=dto.tag,
+            email=dto.email.__str__(),
             hashed_password=HashingContext.generate_hash(dto.password),
         )
 
@@ -60,7 +60,7 @@ class AuthService:
         access_token = JWTHandler.generate_token(jwt_data)
         return TokenSchema(access_token=access_token, token_type="Bearer")
 
-    def change_password(self, dto: ChangePasswordDTO) -> UserEntity:
+    def change_password(self, dto: ChangePasswordDTO) -> AuthUserEntity:
         user_entity = self.get_user_by_email(dto.email.__str__())
 
         if HashingContext.verify_password(dto.old_password, user_entity.hashed_password):
@@ -74,8 +74,8 @@ class AuthService:
 
         return user_entity
 
-    def get_user_by_email(self, email: str) -> UserEntity:
-        user = self._session.query(UserEntity).where(UserEntity.email == email).scalar()
+    def get_user_by_email(self, email: str) -> AuthUserEntity:
+        user = self._session.query(AuthUserEntity).where(AuthUserEntity.email == email).scalar()
 
         if user is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")

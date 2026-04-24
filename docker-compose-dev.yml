@@ -1,0 +1,16 @@
+services:
+  auth-service:
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app
+    volumes:
+      - ./auth-service/src:/app/
+
+  user-service:
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app
+    volumes:
+      - ./user-service/src:/app/
+
+  user-service-consumer:
+    command: python -m watchfiles "python -m kafka.account_event_consumer" /app/kafka/account_event_consumer.py
+    volumes:
+      - ./user-service/src/:/app/
+      - sqlite_data:/app/data
