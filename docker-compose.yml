@@ -87,8 +87,8 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      kafka-init:
-        condition: service_completed_successfully
+      broker:
+        condition: service_healthy
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
