@@ -7,3 +7,4 @@ pydantic[email]
 passlib[argon2]
 PyJWT
 confluent-kafka
+confluent-kafka[avro]
