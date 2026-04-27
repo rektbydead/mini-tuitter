@@ -1,8 +1,10 @@
+import logging
+
 from kafka.event_handler import EventHandler
+from services.user_service import UserService
 from sqlalchemy.orm import Session
 
 from dtos.create_account_dto import CreateAccountDTO
-from services.user_service import UserService
 
 
 class CreateAccountEventHandler(EventHandler):
@@ -11,5 +13,6 @@ class CreateAccountEventHandler(EventHandler):
         self.user_service = UserService(session)
 
     def run(self, message: bytes) -> None:
-        create_account_dto = CreateAccountDTO.model_validate_json(message)
+        logging.info(f"Entrou aqui carago: {message}")
+        create_account_dto = CreateAccountDTO.model_validate(message)
         self.user_service.create_user(create_account_dto)

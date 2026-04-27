@@ -42,11 +42,7 @@
               "type": "string"
             },
             {
-              "name": "fullname",
-              "type": "string"
-            },
-            {
-              "name": "email",
+              "name": "full_name",
               "type": "string"
             },
             {

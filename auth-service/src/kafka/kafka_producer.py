@@ -9,19 +9,19 @@ from confluent_kafka.schema_registry.avro import AvroSerializer
 logger = logging.getLogger(__name__)
 
 def load_schema(name: str) -> str:
-    base = Path(__file__).parent
-    logger.info(f"Loading schema from: {(base / "contracts" / f"{name}.avsc").read_text()}")
-    return (base / "contracts" / f"{name}.avsc").read_text()
+    base = Path(__file__).parent.parent
+    path = base / 'contracts' / name
+    logger.info(f"Loading schema from: {path.read_text()}")
+    return path.read_text()
 
 
 avro_serializer = AvroSerializer(
     SchemaRegistryClient({
         'url': 'http://schema-registry:8081'
     }),
-    load_schema("account-events")
+    load_schema("account-events.avsc")
 )
 
-# producer = Producer({'bootstrap.servers': "broker:29092"})
 producer = SerializingProducer({
     'bootstrap.servers': "broker:29092",
     'key.serializer': lambda k, ctx: k.encode('utf-8'),
