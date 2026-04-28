@@ -9,6 +9,8 @@ TOPICS=(
   "account-updated"
   "user-deleted"
   "user-updated"
+  "AccountEvent"
+  "account-event"
 )
 
 KAFKA_BIN="/opt/kafka/bin/kafka-topics.sh"

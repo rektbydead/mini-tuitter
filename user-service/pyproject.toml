@@ -14,7 +14,7 @@ dependencies = [
     "pydantic[email]==2.13.2",
     "passlib[argon2]==1.7.4",
     "PyJWT==2.12.1",
-    "confluent-kafka==2.14.0"
+    "confluent-kafka[avro]==2.14.0"
 ]
 
 authors = [

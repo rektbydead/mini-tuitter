@@ -82,5 +82,17 @@ services:
       retries: 5
       start_period: 30s
 
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.5.0
+    ports:
+      - "8081:8081"
+    depends_on:
+      broker:
+        condition: service_healthy
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://broker:29092
+
 volumes:
   sqlite_data:
