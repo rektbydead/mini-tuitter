@@ -1,3 +1,5 @@
+import time
+import uuid
 from typing import Annotated
 
 from confluent_kafka import Producer
@@ -6,6 +8,8 @@ from sqlalchemy.orm import Session
 from starlette import status
 
 from config.database_session import get_session
+from config.kafka.schemas.account_event_type import AccountEventType
+from config.kafka.schemas.user_event_schema import UserEventSchema
 from crypto.auth.jwt_handler import JWTHandler
 from crypto.hashing_context import HashingContext
 from dtos.change_password_dto import ChangePasswordDTO
@@ -37,19 +41,21 @@ class AuthService:
         self._session.refresh(entity)
 
         self._producer.produce(
-            'account-created',
-            AccountCreatedEventSchema(
-                id=entity.id,
-                tag=dto.tag,
-                role=dto.role,
-                full_name=dto.full_name,
-                gender=dto.gender,
-                description=dto.description,
-                country='Portugal',
-                age=dto.age,
-                created_at=entity.created_at,
-                updated_at=entity.updated_at,
-            ).model_dump_json()
+            topic="AccountEvent",
+            key=dto.tag,
+            value=UserEventSchema(
+                event_type=AccountEventType.CREATED,
+                user_tag=dto.tag,
+                data=AccountCreatedEventSchema(
+                    tag=dto.tag,
+                    role=dto.role,
+                    full_name=dto.full_name,
+                    gender=dto.gender,
+                    description=dto.description,
+                    country='Portugal',
+                    age=dto.age,
+                )
+            ).model_dump()
         )
 
         return entity

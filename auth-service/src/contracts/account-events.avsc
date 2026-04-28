@@ -1,0 +1,74 @@
+{
+  "type": "record",
+  "name": "AccountEvent",
+  "namespace": "minituitter.authservice.account",
+  "fields": [
+    {
+      "name": "event_id",
+      "type": "string",
+      "doc": "Unique id for the event"
+    },
+    {
+      "name": "event_type",
+      "type": {
+        "type": "enum",
+        "name": "AccountEventType",
+        "symbols": [
+          "CREATED",
+          "UPDATED",
+          "DELETED"
+        ]
+      }
+    },
+    {
+      "name": "user_tag",
+      "type": "string"
+    },
+    {
+      "name": "timestamp",
+      "type": "long",
+      "doc": "Epoch millis"
+    },
+    {
+      "name": "data",
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "AccountData",
+          "fields": [
+            {
+              "name": "tag",
+              "type": "string"
+            },
+            {
+              "name": "full_name",
+              "type": "string"
+            },
+            {
+              "name": "role",
+              "type": "string"
+            },
+            {
+              "name": "gender",
+              "type": "string"
+            },
+            {
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "name": "country",
+              "type": "string"
+            },
+            {
+              "name": "age",
+              "type": "int"
+            }
+          ]
+        }
+      ],
+      "default": null
+    }
+  ]
+}
