@@ -6,16 +6,18 @@ from sqlalchemy.orm import Session
 from starlette import status
 
 from config.database_session import get_session
+from config.kafka.schemas.base_event_schema import BaseEventSchema
+from config.kafka.schemas.event_type import EventType
 from dtos.create_account_dto import CreateAccountDTO
 from dtos.update_account_dto import UpdateAccountDTO
-from kafka.kafka_producer import get_kafka_producer
+from kafka.kafka_producer import get_producer
 from models.entity.user_entity import UserEntity
 
 
 class UserService:
 
     def __init__(self, session: Annotated[Session, Depends(get_session)],
-                 producer: Annotated[Producer, Depends(get_kafka_producer)]) -> None:
+                 producer: Annotated[Producer, Depends(get_producer)]) -> None:
         self._session = session
         self._producer = producer
 
@@ -57,8 +59,12 @@ class UserService:
         self._session.delete(user_entity)
 
         self._producer.produce(
-            'account-deleted',
-            value=str(user_entity.id),
+            topic="UserEvent",
+            key=user_entity.tag,
+            value=BaseEventSchema(
+                event_type=EventType.DELETED,
+                user_tag=user_entity.tag,
+            ).model_dump()
         )
 
         return user_entity
