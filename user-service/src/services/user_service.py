@@ -1,19 +1,25 @@
 from typing import Annotated
 
+from confluent_kafka import Producer
 from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 from starlette import status
 
 from config.database_session import get_session
+from config.kafka.schemas.base_event_schema import BaseEventSchema
+from config.kafka.schemas.event_type import EventType
 from dtos.create_account_dto import CreateAccountDTO
 from dtos.update_account_dto import UpdateAccountDTO
+from kafka.kafka_producer import get_producer
 from models.entity.user_entity import UserEntity
 
 
 class UserService:
 
-    def __init__(self, session: Annotated[Session, Depends(get_session)]) -> None:
+    def __init__(self, session: Annotated[Session, Depends(get_session)],
+                 producer: Annotated[Producer, Depends(get_producer)]) -> None:
         self._session = session
+        self._producer = producer
 
     def create_user(self, dto: CreateAccountDTO) -> UserEntity:
         entity = UserEntity(
@@ -46,16 +52,19 @@ class UserService:
         user_entity.gender = dto.gender
         user_entity.age = dto.age
 
-        self._session.add(user_entity)
-        self._session.flush([user_entity])
-        self._session.refresh(user_entity)
-
         return user_entity
 
     def delete_user(self, user_tag: str) -> UserEntity:
         user_entity = self.get_user_by_tag(user_tag)
-
         self._session.delete(user_entity)
-        self._session.flush([user_entity])
+
+        self._producer.produce(
+            topic="UserEvent",
+            key=user_entity.tag,
+            value=BaseEventSchema(
+                event_type=EventType.DELETED,
+                user_tag=user_entity.tag,
+            ).model_dump()
+        )
 
         return user_entity

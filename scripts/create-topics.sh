@@ -5,12 +5,8 @@ PARTITIONS=3
 REPLICATION_FACTOR=1
 
 TOPICS=(
-  "account-created"
-  "account-updated"
-  "user-deleted"
-  "user-updated"
   "AccountEvent"
-  "account-event"
+  "UserEvent"
 )
 
 KAFKA_BIN="/opt/kafka/bin/kafka-topics.sh"

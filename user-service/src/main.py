@@ -4,6 +4,7 @@ from typing import AsyncGenerator
 from fastapi import FastAPI
 
 from config.database_session import get_engine, create_db_and_tables
+from kafka.kafka_producer import flush_producer
 from routers import user_router
 
 
@@ -13,6 +14,7 @@ async def _lifespan(_: FastAPI) -> AsyncGenerator:
     engine = get_engine()
     create_db_and_tables(engine)
     yield
+    flush_producer()
 
 
 app = FastAPI(
