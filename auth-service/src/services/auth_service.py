@@ -4,6 +4,7 @@ from typing import Annotated
 
 from confluent_kafka import Producer
 from fastapi import Depends, HTTPException
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from starlette import status
 
@@ -30,6 +31,9 @@ class AuthService:
         self._producer = producer
 
     def register(self, dto: RegisterAccountDTO) -> AuthUserEntity:
+        if self.get_user_by_email_or_tag(dto.email, dto.tag):
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Email or tag already in use.")
+
         entity = AuthUserEntity(
             tag=dto.tag,
             email=dto.email.__str__(),
@@ -38,25 +42,6 @@ class AuthService:
 
         self._session.add(entity)
         self._session.flush([entity])
-        self._session.refresh(entity)
-
-        self._producer.produce(
-            topic="AccountEvent",
-            key=dto.tag,
-            value=UserEventSchema(
-                event_type=AccountEventType.CREATED,
-                user_tag=dto.tag,
-                data=AccountCreatedEventSchema(
-                    tag=dto.tag,
-                    role=dto.role,
-                    full_name=dto.full_name,
-                    gender=dto.gender,
-                    description=dto.description,
-                    country='Portugal',
-                    age=dto.age,
-                )
-            ).model_dump()
-        )
 
         return entity
 
@@ -87,3 +72,6 @@ class AuthService:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
         return user
+
+    def get_user_by_email_or_tag(self, email: str, tag: str) -> AuthUserEntity:
+        return self._session.query(AuthUserEntity).where(or_(AuthUserEntity.email == email, AuthUserEntity.tag == tag)).scalar()
