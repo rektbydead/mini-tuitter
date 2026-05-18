@@ -39,6 +39,7 @@ def get_kafka_producer() -> Generator[Producer, Any, None]:
         yield producer
     except Exception as e:
         logger.info(f"Error: {e}")
+        raise
     finally:
         producer.poll(0)
 
